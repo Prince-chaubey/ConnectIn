@@ -123,7 +123,7 @@ const getProjectById = async (req, res) => {
 // ─── Apply to Project ──────────────────────────────────────────────────────────
 const applyToProject = async (req, res) => {
   try {
-    const { roleName, coverLetter } = req.body;
+    const { roleName, coverLetter, resumeUrl } = req.body;
     const projectId = req.params.id;
 
     const project = await Project.findById(projectId).populate(
@@ -177,6 +177,7 @@ const applyToProject = async (req, res) => {
       applicant: req.userId,
       roleName,
       coverLetter: coverLetter || "",
+      resumeUrl: resumeUrl || "",
     });
 
     // Update user stats
@@ -195,6 +196,7 @@ const applyToProject = async (req, res) => {
         projectTitle: project.title,
         projectType: project.type,
         roleName,
+        resumeUrl: resumeUrl || "",
       });
 
       if (project.createdBy?.email) {
@@ -228,7 +230,14 @@ const applyToProject = async (req, res) => {
 const getMyApplications = async (req, res) => {
   try {
     const applications = await Application.find({ applicant: req.userId })
-      .populate("project", "title type status deadline createdBy")
+      .populate({
+        path: "project",
+        select: "title type status deadline createdBy",
+        populate: {
+          path: "createdBy",
+          select: "name profilePic",
+        },
+      })
       .sort({ createdAt: -1 });
 
     res.json({ success: true, applications });

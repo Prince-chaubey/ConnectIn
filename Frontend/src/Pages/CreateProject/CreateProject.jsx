@@ -4,8 +4,7 @@ import Layout from "../../Components/Layout/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {
-  ArrowLeft, Plus, X, Rocket, Trophy, Users, Briefcase,
-  Calendar, Clock, Tag as TagIcon, Code2, Loader2, ChevronDown, Info
+  ArrowLeft, Plus, X, Rocket, Loader2
 } from "lucide-react";
 
 const PROJECT_TYPES = [
@@ -34,25 +33,13 @@ const CreateProject = () => {
     type:        "",
     deadline:    "",
     duration:    "",
-    techStack:   [],
-    tags:        [],
-    _tempTag:    "",
-    _tempTech:   "",
   });
   const [roles, setRoles] = useState([emptyRole()]);
 
   // ── Form field helpers ─────────────────────────────────────────────────────
   const setField = (key, val) => setForm((f) => ({ ...f, [key]: val }));
 
-  const addTag = (key, tempKey) => {
-    const val = form[tempKey]?.trim();
-    if (!val) return;
-    if (!form[key].includes(val)) setField(key, [...form[key], val]);
-    setField(tempKey, "");
-  };
 
-  const removeTag = (key, val) =>
-    setField(key, form[key].filter((t) => t !== val));
 
   // ── Role helpers ───────────────────────────────────────────────────────────
   const updateRole = (idx, key, val) =>
@@ -99,8 +86,6 @@ const CreateProject = () => {
           type:        form.type,
           deadline:    form.deadline || undefined,
           duration:    form.duration.trim(),
-          techStack:   form.techStack,
-          tags:        form.tags,
           roles:       cleanedRoles,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -332,73 +317,7 @@ const CreateProject = () => {
               </div>
             </div>
 
-            {/* ── Tech Stack + Tags ── */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-6 space-y-4">
-              <h2 className="text-sm font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                <span className="w-1 h-4 rounded-full bg-sky-500" />
-                Tech Stack & Tags
-              </h2>
 
-              <div>
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
-                  Tech Stack
-                </label>
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {form.techStack.map((t, i) => (
-                    <span key={i} className="inline-flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900 text-white rounded-xl font-medium">
-                      {t}
-                      <button type="button" onClick={() => removeTag("techStack", t)} className="hover:text-red-300">
-                        <X className="w-2.5 h-2.5" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={form._tempTech}
-                    onChange={(e) => setField("_tempTech", e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag("techStack", "_tempTech"); } }}
-                    placeholder="React, Node.js, MongoDB..."
-                    className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all placeholder-slate-300"
-                  />
-                  <button type="button" onClick={() => addTag("techStack", "_tempTech")}
-                    className="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-blue-600 transition-colors">
-                    Add
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
-                  Project Tags
-                </label>
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {form.tags.map((t, i) => (
-                    <span key={i} className="inline-flex items-center gap-1 text-xs px-2.5 py-1 bg-blue-50 border border-blue-100 text-blue-700 rounded-xl font-medium">
-                      #{t}
-                      <button type="button" onClick={() => removeTag("tags", t)} className="hover:text-red-500">
-                        <X className="w-2.5 h-2.5" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={form._tempTag}
-                    onChange={(e) => setField("_tempTag", e.target.value)}
-                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addTag("tags", "_tempTag"); } }}
-                    placeholder="AI, mobile, blockchain..."
-                    className="flex-1 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all placeholder-slate-300"
-                  />
-                  <button type="button" onClick={() => addTag("tags", "_tempTag")}
-                    className="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-blue-600 transition-colors">
-                    Add
-                  </button>
-                </div>
-              </div>
-            </div>
 
             {/* ── Submit ── */}
             <div className="flex gap-3 pb-10">

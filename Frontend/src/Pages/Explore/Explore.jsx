@@ -106,10 +106,15 @@ const ProjectCard = ({ project }) => {
       {/* Footer */}
       <div className="px-5 pb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          {project.createdBy?.profilePic ? (
-            <img src={project.createdBy.profilePic} className="w-6 h-6 rounded-full object-cover border border-slate-100" alt="creator" />
+          {project.createdBy?.profilePic &&
+          !project.createdBy.profilePic.includes("via.placeholder.com") ? (
+            <img
+              src={project.createdBy.profilePic}
+              className="w-7 h-7 rounded-full object-cover border border-slate-200 shadow-sm"
+              alt={project.createdBy.name || "creator"}
+            />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white text-[10px] font-bold">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
               {project.createdBy?.name?.[0]?.toUpperCase() || "U"}
             </div>
           )}
@@ -179,7 +184,7 @@ const Explore = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-[#f8fafc]">
-        {/* ── Page Header ── */}
+      
         <div className="bg-white border-b border-slate-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-8">
             <div className="max-w-xl">

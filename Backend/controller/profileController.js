@@ -138,7 +138,9 @@ const updateProfilePicture = async (req, res) => {
       });
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Build an absolute URL so the frontend can render it directly
+    const baseUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 8080}`;
+    const imageUrl = `${baseUrl}/uploads/${req.file.filename}`;
 
     const user = await User.findByIdAndUpdate(
       req.userId,

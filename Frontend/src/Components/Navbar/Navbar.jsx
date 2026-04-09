@@ -96,7 +96,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-white/80 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-50 transition-all duration-300 shadow-sm">
+    <>
+    <nav className="w-full bg-white/80 backdrop-blur-xl border-b border-slate-200 sticky top-0 z-40 transition-all duration-300 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
 
         {/* Logo */}
@@ -209,6 +210,7 @@ const Navbar = () => {
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
+    </nav>
 
       {/* Mobile Menu Overlay */}
       <div 
@@ -285,7 +287,7 @@ const Navbar = () => {
             </div>
          </div>
       </div>
-    </nav>
+    </>
   );
 };
 

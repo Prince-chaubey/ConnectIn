@@ -51,13 +51,25 @@ const ApplicationRow = ({ app, onStatusChange }) => {
     <div className="flex items-center gap-3 py-3 px-4 hover:bg-slate-50 rounded-xl transition-colors">
       {/* Avatar */}
       <div className="shrink-0">
-        {applicant.profilePic ? (
-          <img src={applicant.profilePic} className="w-9 h-9 rounded-full object-cover border border-slate-100" alt={applicant.name} />
-        ) : (
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white text-sm font-bold">
-            {applicant.name?.[0]?.toUpperCase() || "?"}
-          </div>
-        )}
+        {applicant.profilePic && !applicant.profilePic.includes("via.placeholder.com") ? (
+          <img 
+            src={applicant.profilePic} 
+            className="w-9 h-9 rounded-full object-cover border border-slate-100" 
+            alt={applicant.name} 
+            onError={(e) => {
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "flex";
+            }}
+          />
+        ) : null}
+        <div 
+          className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 items-center justify-center text-white text-sm font-bold"
+          style={{
+            display: applicant.profilePic && !applicant.profilePic.includes("via.placeholder.com") ? "none" : "flex"
+          }}
+        >
+          {applicant.name?.[0]?.toUpperCase() || "?"}
+        </div>
       </div>
 
       <div className="flex-1 min-w-0">

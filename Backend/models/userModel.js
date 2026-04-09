@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
 
     profilePic: {
       type: String,
-      default: "https://via.placeholder.com/150"
+      default: ""
     },
 
     coverPic: {

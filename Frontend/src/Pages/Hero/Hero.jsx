@@ -4,14 +4,14 @@ import { ArrowRight, Sparkles, Code2, Users, Rocket, Target } from 'lucide-react
 
 const Hero = () => {
   return (
-    <div className="w-full min-h-[90vh] flex items-center justify-center bg-[#f8fafc] relative overflow-hidden font-sans pt-16 lg:pt-0">
+    <div className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center bg-[#f8fafc] relative overflow-hidden font-sans py-12 lg:py-16">
       
       {/* Dynamic Background Elements */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob"></div>
       <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-300/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-2000"></div>
       <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-indigo-300/30 rounded-full mix-blend-multiply filter blur-[80px] animate-blob animation-delay-4000"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center w-full">
         
         {/* LEFT CONTENT */}
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -61,7 +61,7 @@ const Hero = () => {
         </div>
 
         {/* RIGHT CONTENT - GLASS UI MOCKUP */}
-        <div className="relative mx-auto w-full max-w-[500px] lg:max-w-none pt-10 lg:pt-0">
+        <div className="relative mx-auto w-full max-w-[420px] sm:max-w-[500px] lg:max-w-none pt-6 lg:pt-0">
           
           {/* Main Dashboard Panel */}
           <div className="relative bg-white/80 backdrop-blur-xl border border-white rounded-[2rem] p-6 shadow-2xl shadow-blue-900/10 z-20 overflow-hidden transform transition-transform hover:-translate-y-2 duration-500">

@@ -190,6 +190,27 @@ const MyApplications = () => {
                           </div>
                         </div>
 
+                        {/* Host (project creator) avatar + name */}
+                        {app.project?.createdBy && (
+                          <div className="flex items-center gap-1.5 mt-2">
+                            {app.project.createdBy.profilePic &&
+                            !app.project.createdBy.profilePic.includes("via.placeholder.com") ? (
+                              <img
+                                src={app.project.createdBy.profilePic}
+                                alt={app.project.createdBy.name}
+                                className="w-5 h-5 rounded-full object-cover border border-slate-200 shrink-0"
+                              />
+                            ) : (
+                              <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white text-[9px] font-bold shrink-0">
+                                {app.project.createdBy.name?.[0]?.toUpperCase() || "?"}
+                              </div>
+                            )}
+                            <span className="text-[11px] text-slate-400 truncate">
+                              by <span className="font-semibold text-slate-600">{app.project.createdBy.name}</span>
+                            </span>
+                          </div>
+                        )}
+
                         <div className="flex items-center gap-3 mt-2 flex-wrap">
                           <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md border ${typeMeta.color}`}>
                             {typeMeta.label}
@@ -202,7 +223,7 @@ const MyApplications = () => {
 
                         {app.coverLetter && (
                           <p className="text-xs text-slate-400 mt-2 line-clamp-1 italic">
-                            "{app.coverLetter}"
+                            &ldquo;{app.coverLetter}&rdquo;
                           </p>
                         )}
                       </div>

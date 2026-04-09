@@ -22,6 +22,10 @@ const applicationSchema = new mongoose.Schema(
       default: "",
       maxlength: 1000,
     },
+    resumeUrl: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected"],

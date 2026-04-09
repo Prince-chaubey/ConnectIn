@@ -1,12 +1,25 @@
 const nodemailer = require("nodemailer");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+// Lazy transporter — created on first use so env vars are guaranteed to be loaded
+let _transporter = null;
+
+const getTransporter = () => {
+  if (!_transporter) {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error("❌ EMAIL_USER or EMAIL_PASS is missing from .env");
+      return null;
+    }
+    _transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS.replace(/\s+/g, ""), // strip ALL spaces automatically
+      },
+    });
+    console.log(`✅ Email transporter created for: ${process.env.EMAIL_USER}`);
+  }
+  return _transporter;
+};
 
 /**
  * Send confirmation email to the applicant
@@ -17,6 +30,7 @@ const sendApplicationConfirmation = async ({
   projectTitle,
   projectType,
   roleName,
+  resumeUrl,
 }) => {
   const typeLabel = {
     capstone: "Capstone Project",
@@ -73,6 +87,13 @@ const sendApplicationConfirmation = async ({
                     <span style="background:#fef9c3;color:#854d0e;padding:3px 12px;border-radius:20px;font-size:12px;font-weight:700;">Pending Review</span>
                   </td>
                 </tr>
+                ${resumeUrl ? `
+                <tr>
+                  <td style="padding:8px 0;color:#94a3b8;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Resume</td>
+                  <td style="padding:8px 0;">
+                    <a href="${resumeUrl}" target="_blank" style="color:#2563eb;font-size:13px;font-weight:700;text-decoration:none;">📄 View Submitted Resume →</a>
+                  </td>
+                </tr>` : ''}
               </table>
             </div>
 
@@ -104,10 +125,16 @@ const sendApplicationConfirmation = async ({
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const transport = getTransporter();
+    if (!transport) {
+      console.error("❌ Cannot send email — transporter not initialized (check EMAIL_USER/EMAIL_PASS in .env)");
+      return;
+    }
+    await transport.sendMail(mailOptions);
     console.log(`✅ Confirmation email sent to ${toEmail}`);
   } catch (err) {
     console.error("❌ Error sending confirmation email:", err.message);
+    console.error("   Full error:", err);
   }
 };
 
@@ -177,10 +204,16 @@ const sendCreatorNotification = async ({
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const transport = getTransporter();
+    if (!transport) {
+      console.error("❌ Cannot send email — transporter not initialized (check EMAIL_USER/EMAIL_PASS in .env)");
+      return;
+    }
+    await transport.sendMail(mailOptions);
     console.log(`✅ Creator notification sent to ${toEmail}`);
   } catch (err) {
     console.error("❌ Error sending creator notification:", err.message);
+    console.error("   Full error:", err);
   }
 };
 
