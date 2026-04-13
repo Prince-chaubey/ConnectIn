@@ -1,6 +1,7 @@
 const Project = require("../models/projectModel");
 const Application = require("../models/applicationModel");
 const User = require("../models/userModel");
+const analyzeResume = require("../utils/analyzeResume");
 const {
   sendApplicationConfirmation,
   sendCreatorNotification,
@@ -338,6 +339,62 @@ const updateApplicationStatus = async (req, res) => {
   }
 };
 
+// ─── Analyze Application CV with Gemini AI ─────────────────────────────────────
+const analyzeApplication = async (req, res) => {
+  try {
+    const { applicationId } = req.params;
+
+    const application = await Application.findById(applicationId)
+      .populate({
+        path: "project",
+        select: "title roles createdBy",
+      })
+      .populate("applicant", "name email skills");
+
+    if (!application) {
+      return res.status(404).json({ success: false, message: "Application not found" });
+    }
+
+    // Only the project creator can analyze
+    if (application.project.createdBy.toString() !== req.userId) {
+      return res.status(403).json({ success: false, message: "Not authorized" });
+    }
+
+    if (!application.resumeUrl) {
+      return res.status(400).json({
+        success: false,
+        message: "This applicant has not uploaded a resume.",
+      });
+    }
+
+    // Find role details from the project
+    const role = application.project.roles.find(
+      (r) => r.roleName === application.roleName
+    );
+
+    const analysis = await analyzeResume({
+      resumeUrl: application.resumeUrl,
+      roleName: application.roleName,
+      roleDescription: role?.description || "",
+      skillsRequired: role?.skillsRequired || [],
+      applicantSkills: application.applicant?.skills || [],
+    });
+
+    // Persist result on the application document
+    application.aiScore      = analysis.score;
+    application.aiSummary    = analysis.summary;
+    application.aiStrengths  = analysis.strengths || [];
+    application.aiGaps       = analysis.gaps || [];
+    application.aiAnalyzedAt = new Date();
+    await application.save();
+
+    res.json({ success: true, analysis });
+  } catch (error) {
+    console.error("Analyze application error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // ─── Admin Stats (Admin only) ──────────────────────────────────────────────────
 const getAdminStats = async (req, res) => {
   try {
@@ -399,4 +456,5 @@ module.exports = {
   getMyProjects,
   updateApplicationStatus,
   getAdminStats,
+  analyzeApplication,
 };

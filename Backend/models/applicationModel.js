@@ -31,6 +31,13 @@ const applicationSchema = new mongoose.Schema(
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
+
+    // ── AI CV Analysis ──────────────────────────────────────────────────────────
+    aiScore:       { type: Number,   default: null },
+    aiSummary:     { type: String,   default: "" },
+    aiStrengths:   { type: [String], default: [] },
+    aiGaps:        { type: [String], default: [] },
+    aiAnalyzedAt:  { type: Date,     default: null },
   },
   { timestamps: true }
 );

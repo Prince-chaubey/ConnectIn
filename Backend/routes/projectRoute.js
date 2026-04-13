@@ -11,6 +11,7 @@ const {
   getMyProjects,
   updateApplicationStatus,
   getAdminStats,
+  analyzeApplication,
 } = require("../controller/projectController");
 
 // Public
@@ -24,5 +25,7 @@ projectRouter.get("/:id", getProjectById);
 projectRouter.post("/", auth, createProject);
 projectRouter.post("/:id/apply", auth, applyToProject);
 projectRouter.put("/applications/:applicationId/status", auth, updateApplicationStatus);
+projectRouter.post("/applications/:applicationId/analyze", auth, analyzeApplication);
 
 module.exports = projectRouter;
+
