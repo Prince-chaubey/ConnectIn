@@ -1,14 +1,24 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+/**
+ * Extracts the Cloudinary public_id from a full Cloudinary URL.
+ * e.g. https://res.cloudinary.com/demo/raw/upload/v123/connectsphere_resumes/file.pdf
+ *   → connectsphere_resumes/file.pdf
+ */
+const extractPublicId = (url) => {
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+)$/);
+  return match ? match[1] : null;
+};
 
 /**
  * Analyzes a resume PDF using Gemini AI and scores it against a role.
- * @param {Object} opts
- * @param {string} opts.resumeUrl        - Cloudinary URL of the resume PDF
- * @param {string} opts.roleName         - Role the applicant applied for
- * @param {string} opts.roleDescription  - Description of the role
- * @param {string[]} opts.skillsRequired - Skills required for the role
- * @param {string[]} opts.applicantSkills- Skills listed on the applicant's profile
- * @returns {Promise<{score, summary, strengths, gaps}>}
  */
 const analyzeResume = async ({
   resumeUrl,
@@ -20,8 +30,21 @@ const analyzeResume = async ({
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  // Fetch the PDF from Cloudinary and convert to base64
-  const response = await fetch(resumeUrl);
+  // Generate a signed Cloudinary URL valid for 5 minutes to bypass access restrictions
+  const publicId = extractPublicId(resumeUrl);
+  let fetchUrl = resumeUrl; // fallback
+
+  if (publicId) {
+    fetchUrl = cloudinary.url(publicId, {
+      resource_type: "raw",
+      type:          "upload",
+      sign_url:      true,
+      secure:        true,
+      expires_at:    Math.floor(Date.now() / 1000) + 300, // 5 min
+    });
+  }
+
+  const response = await fetch(fetchUrl);
   if (!response.ok) {
     throw new Error(`Failed to fetch resume: ${response.statusText}`);
   }
@@ -50,17 +73,11 @@ Respond with ONLY a valid JSON object — no markdown, no code block, no explana
 Score guide: 0-40 = Poor fit, 41-60 = Average, 61-80 = Good fit, 81-100 = Excellent fit`;
 
   const result = await model.generateContent([
-    {
-      inlineData: {
-        mimeType: "application/pdf",
-        data: base64,
-      },
-    },
+    { inlineData: { mimeType: "application/pdf", data: base64 } },
     prompt,
   ]);
 
   const text = result.response.text().trim();
-  // Strip markdown code fences if Gemini wraps the JSON
   const cleaned = text
     .replace(/^```json\s*/i, "")
     .replace(/^```\s*/i, "")
@@ -71,3 +88,4 @@ Score guide: 0-40 = Poor fit, 41-60 = Average, 61-80 = Good fit, 81-100 = Excell
 };
 
 module.exports = analyzeResume;
+
