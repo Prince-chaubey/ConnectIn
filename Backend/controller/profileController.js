@@ -1,5 +1,4 @@
 const User = require("../models/userModel");
-const upload = require("../middleware/upload");
 
 const getProfile = async (req, res) => {
   try {
@@ -184,9 +183,8 @@ const updateProfilePicture = async (req, res) => {
       });
     }
 
-    // Build an absolute URL so the frontend can render it directly
-    const baseUrl = process.env.BACKEND_URL || `http://localhost:${process.env.PORT || 8080}`;
-    const imageUrl = `${baseUrl}/uploads/${req.file.filename}`;
+    // multer-storage-cloudinary puts the Cloudinary URL in req.file.path
+    const imageUrl = req.file.path;
 
     const user = await User.findByIdAndUpdate(
       req.userId,

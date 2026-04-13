@@ -36,6 +36,8 @@ const projectSchema = new mongoose.Schema(
     techStack: { type: [String], default: [] },
     duration: { type: String, default: "" },
     teamSize: { type: String, default: "" },
+    // Budget — relevant for freelancing projects (amount paid to selected applicant)
+    budget: { type: Number, default: 0, min: 0 },
   },
   { timestamps: true }
 );

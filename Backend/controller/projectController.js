@@ -19,12 +19,21 @@ const createProject = async (req, res) => {
       deadline,
       techStack,
       duration,
+      budget,
     } = req.body;
 
     if (!title || !description || !type || !roles || roles.length === 0) {
       return res.status(400).json({
         success: false,
         message: "Title, description, type, and at least one role are required.",
+      });
+    }
+
+    // Validate budget for freelancing projects
+    if (type === "freelancing" && (!budget || Number(budget) <= 0)) {
+      return res.status(400).json({
+        success: false,
+        message: "Budget is required for freelancing projects.",
       });
     }
 
@@ -45,6 +54,7 @@ const createProject = async (req, res) => {
       deadline: deadline || null,
       techStack: techStack || [],
       duration: duration || "",
+      budget: type === "freelancing" ? Number(budget) : 0,
     });
 
     // update creator stats

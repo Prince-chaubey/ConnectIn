@@ -1,7 +1,7 @@
 const express = require("express");
 const profileRouter = express.Router();
 const auth = require("../middleware/auth");
-const upload = require("../middleware/upload");
+const profilePicUpload = require("../middleware/profilePicUpload");
 const resumeUpload = require("../middleware/resumeUpload");
 
 const {
@@ -26,7 +26,7 @@ profileRouter.put("/profile", updateProfile);
 profileRouter.put(
   "/profile/picture",
   auth,
-  upload.single("profilePic"),
+  profilePicUpload.single("profilePic"),
   updateProfilePicture
 );
 
