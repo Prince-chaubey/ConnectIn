@@ -1,21 +1,4 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-/**
- * Extracts the Cloudinary public_id from a full Cloudinary URL.
- * e.g. https://res.cloudinary.com/demo/raw/upload/v123/connectsphere_resumes/file.pdf
- *   → connectsphere_resumes/file.pdf
- */
-const extractPublicId = (url) => {
-  const match = url.match(/\/upload\/(?:v\d+\/)?(.+)$/);
-  return match ? match[1] : null;
-};
 
 /**
  * Analyzes a resume PDF using Gemini AI and scores it against a role.
@@ -30,21 +13,8 @@ const analyzeResume = async ({
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  // Generate a signed Cloudinary URL valid for 5 minutes to bypass access restrictions
-  const publicId = extractPublicId(resumeUrl);
-  let fetchUrl = resumeUrl; // fallback
-
-  if (publicId) {
-    fetchUrl = cloudinary.url(publicId, {
-      resource_type: "raw",
-      type:          "upload",
-      sign_url:      true,
-      secure:        true,
-      expires_at:    Math.floor(Date.now() / 1000) + 300, // 5 min
-    });
-  }
-
-  const response = await fetch(fetchUrl);
+  // Cloudinary raw uploads are publicly accessible — fetch directly from the stored URL
+  const response = await fetch(resumeUrl);
   if (!response.ok) {
     throw new Error(`Failed to fetch resume: ${response.statusText}`);
   }
