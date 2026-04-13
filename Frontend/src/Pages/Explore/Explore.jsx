@@ -276,12 +276,14 @@ const Explore = () => {
                 <p className="text-sm text-slate-500">
                   <span className="font-bold text-slate-900">{filtered.length}</span> project{filtered.length !== 1 ? "s" : ""} found
                 </p>
-                <button
+                 {
+                  localStorage.getItem("role")==="creator"?<button
                   onClick={() => navigate("/create-project")}
                   className="hidden sm:flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-blue-600 transition-colors"
                 >
                   <Rocket className="w-4 h-4" /> Post a Project
-                </button>
+                </button>:""
+                 }
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

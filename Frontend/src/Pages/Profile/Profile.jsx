@@ -494,7 +494,7 @@ const Profile = () => {
                     </h2>
                     <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-blue-50/80 text-blue-700 text-sm font-semibold mt-3 border border-blue-100/50 shadow-sm">
                       {user.role === "creator"
-                        ? "Content Creator"
+                        ? "Creator"
                         : user.role === "admin"
                           ? "Administrator"
                           : "User Member"}

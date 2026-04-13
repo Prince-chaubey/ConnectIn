@@ -25,6 +25,7 @@ connectDB();
 app.use('/api/auth',userRouter);
 app.use("/api/user",profileRouter);
 app.use("/api/projects", projectRouter);
+
 const PORT=process.env.PORT || 8080;
 
 app.listen(PORT,()=>{

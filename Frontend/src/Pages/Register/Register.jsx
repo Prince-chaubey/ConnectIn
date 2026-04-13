@@ -52,7 +52,7 @@ const handleSubmit = async (e) => {
   try {
     const res = await axios.post(`${API_URL}/auth/register`, formData);
 
-    // ✅ store role (important for navbar)
+  
     localStorage.setItem("role", formData.role);
     localStorage.setItem("username",res.data.user.name);
 

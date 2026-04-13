@@ -38,8 +38,8 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["user", "creator", "admin"],
-      default: "user"
+      enum: ["seeker", "creator"],
+      default: "seeker"
     },
 
     // ==================== PROFILE ====================
