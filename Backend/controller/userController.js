@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const mappedRole = role === "creator" ? "creator" : "user";
+    const mappedRole = role === "creator" ? "creator" : "seeker";
 
     const user = await userModel.create({
       name,
