@@ -600,7 +600,8 @@ const Profile = () => {
           <div className="grid lg:grid-cols-3 gap-6">
             {/* Left Column - Main Info (Spans 2 cols on lg) */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Skills Widget */}
+              {/* Skills Widget — visible for seekers only */}
+              {user.role !== "creator" && (
               <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 transition-all duration-300 hover:shadow-md">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -655,6 +656,7 @@ const Profile = () => {
                   </div>
                 )}
               </div>
+              )}
 
               {/* Professional Details Widget */}
               <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 transition-all duration-300 hover:shadow-md">
@@ -748,7 +750,8 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Resume Widget */}
+              {/* Resume Widget — visible for seekers only */}
+              {user.role !== "creator" && (
               <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 transition-all duration-300 hover:shadow-md">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -824,6 +827,7 @@ const Profile = () => {
                   )}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Right Column - Stats & Links */}

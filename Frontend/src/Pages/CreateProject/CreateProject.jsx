@@ -33,6 +33,7 @@ const CreateProject = () => {
     type:        "",
     deadline:    "",
     duration:    "",
+    budget:      "",
   });
   const [roles, setRoles] = useState([emptyRole()]);
 
@@ -71,6 +72,9 @@ const CreateProject = () => {
     const validRoles = roles.filter((r) => r.roleName.trim());
     if (validRoles.length === 0) return toast.error("Add at least one role");
 
+    if (form.type === "freelancing" && (!form.budget || Number(form.budget) <= 0))
+      return toast.error("Please enter the budget you will pay for this project");
+
     const token = localStorage.getItem("token");
     if (!token) return toast.error("Please login first");
 
@@ -87,6 +91,7 @@ const CreateProject = () => {
           deadline:    form.deadline || undefined,
           duration:    form.duration.trim(),
           roles:       cleanedRoles,
+          budget:      form.type === "freelancing" ? Number(form.budget) : 0,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -208,6 +213,27 @@ const CreateProject = () => {
                   />
                 </div>
               </div>
+
+              {/* Budget — shown only for freelancing */}
+              {form.type === "freelancing" && (
+                <div>
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">
+                    💰 Project Budget (amount you will pay) *
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm select-none">₹</span>
+                    <input
+                      type="number"
+                      min={1}
+                      value={form.budget}
+                      onChange={(e) => setField("budget", e.target.value)}
+                      placeholder="e.g. 5000"
+                      className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all placeholder-slate-300"
+                    />
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">This is the total amount you agree to pay the selected applicant upon project completion.</p>
+                </div>
+              )}
             </div>
 
             {/* ── Roles ── */}
