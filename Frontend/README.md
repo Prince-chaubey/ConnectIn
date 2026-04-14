@@ -1,16 +1,34 @@
-# React + Vite
+# 🖥️ ConnectSphere Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend layer of the **ConnectSphere** platform, built with modern web technologies to provide a slick, responsive, and high-performance user experience.
 
-Currently, two official plugins are available:
+## 🚀 Key Technologies
+- **React 19:** Utilizing the latest features for efficient rendering and state management.
+- **Vite 6:** Lightning-fast build tool and development server.
+- **Tailwind CSS 4:** Modern styling with zero-runtime overhead and maximum flexibility.
+- **Lucide React:** Beautifully crafted, consistent iconography.
+- **React Router DOM 7:** Seamless client-side navigation.
+- **Axios:** Robust HTTP client for backend communication.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🏗 Project Structure
+- `/src/components`: Reusable UI components (Buttons, Inputs, Cards).
+- `/src/pages`: Main application views (Home, Profile, Dashboard, Project Details).
+- `/src/utils`: Helper functions and API configurations.
+- `/src/context` (if any): Global state management providers.
 
-## React Compiler
+## 🛠 Features Implemented
+- **Responsive Navigation:** Optimized for both desktop and mobile devices.
+- **Dynamic Dashboard:** Real-time data visualization for creators to track applicants.
+- **Rich Forms:** Multi-step project creation and application processes.
+- **Toasts & Feedback:** Immediate user feedback via `react-hot-toast`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚦 Getting Started
+1. Ensure the Backend is running on `http://localhost:5000`.
+2. Install dependencies: `npm install`
+3. Start development server: `npm run dev`
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Build for Production
+```bash
+npm run build
+```
+The build artifacts will be stored in the `dist/` directory.

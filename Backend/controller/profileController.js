@@ -215,8 +215,8 @@ const updateResume = async (req, res) => {
 
     // multer-storage-cloudinary attaches the remote url in 'path'
     const resumeUrl = req.file.path;
-    console.log("File Object:", req.file); // ✅ CORRECT PLACE
-    console.log("File URL:", req.file.path); // 🔥 MOST IMPORTANT
+   // console.log("File Object:", req.file); // ✅ CORRECT PLACE
+   // console.log("File URL:", req.file.path); // 🔥 MOST IMPORTANT
 
     const user = await User.findByIdAndUpdate(
       req.userId,

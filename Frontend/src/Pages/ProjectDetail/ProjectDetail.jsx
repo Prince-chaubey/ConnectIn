@@ -94,7 +94,7 @@ const ApplyModal = ({ project, onClose, onSuccess }) => {
         const uploadedUrl = res.data.user?.resume || "";
         setResumeUrl(uploadedUrl);
         setProfileResume(uploadedUrl);
-        toast.success("Resume uploaded! ✅");
+        toast.success("Resume uploaded!");
       }
     } catch (err) {
       toast.error(err.response?.data?.message || "Upload failed");
@@ -115,7 +115,7 @@ const ApplyModal = ({ project, onClose, onSuccess }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.success) {
-        toast.success("Application submitted! Check your email 📧");
+        toast.success("Application submitted! Check your email ");
         onSuccess();
         onClose();
       }
@@ -279,7 +279,7 @@ const ApplyModal = ({ project, onClose, onSuccess }) => {
                         </>
                       ) : resumeUrl ? (
                         <>
-                          <span className="text-2xl">✅</span>
+                            
                           <span className="text-xs font-bold text-emerald-700">Resume uploaded successfully</span>
                           <span className="text-[11px] text-emerald-600 truncate max-w-full px-2">{getFileName(resumeUrl)}</span>
                           <span className="text-[11px] text-slate-400">Click to replace</span>
