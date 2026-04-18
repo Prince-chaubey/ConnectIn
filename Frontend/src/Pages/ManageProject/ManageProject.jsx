@@ -119,31 +119,32 @@ const ApplicationRow = ({ app, onStatusChange }) => {
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row gap-4">
-      {/* Profile Detail */}
-      <div className="flex-1 flex gap-4 items-start">
-        <Link to={`/profile/${applicant._id || ''}`} className="shrink-0">
-           {applicant.profilePic && !applicant.profilePic.includes("via.placeholder.com") ? (
-             <img src={applicant.profilePic} className="w-12 h-12 rounded-full border border-slate-100 object-cover" alt="Avatar"/>
-           ) : (
-             <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg">
-               {applicant.name?.[0]?.toUpperCase() || "?"}
-             </div>
-           )}
-        </Link>
-        <div>
-           <Link to={`/profile/${applicant._id || ''}`} className="font-bold text-slate-800 text-lg hover:text-blue-600 hover:underline">{applicant.name || "Unknown"}</Link>
-           <p className="text-sm font-medium text-slate-500 mt-0.5">Role Applied: <span className="text-slate-800">{app.roleName}</span></p>
-           {app.resumeUrl && (
-             <a href={app.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1 mt-1.5">
-               <ExternalLink className="w-3 h-3"/> View Resume
-             </a>
-           )}
+    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all flex flex-col">
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        {/* Profile Detail */}
+        <div className="flex-[1.5] flex gap-4 items-start min-w-0">
+          <Link to={`/profile/${applicant._id || ''}`} className="shrink-0">
+             {applicant.profilePic && !applicant.profilePic.includes("via.placeholder.com") ? (
+               <img src={applicant.profilePic} className="w-12 h-12 rounded-full border border-slate-100 object-cover" alt="Avatar"/>
+             ) : (
+               <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-lg">
+                 {applicant.name?.[0]?.toUpperCase() || "?"}
+               </div>
+             )}
+          </Link>
+          <div className="min-w-0">
+             <Link to={`/profile/${applicant._id || ''}`} className="font-bold text-slate-800 text-lg hover:text-blue-600 hover:underline truncate block">{applicant.name || "Unknown"}</Link>
+             <p className="text-sm font-medium text-slate-500 mt-0.5 truncate">Role Applied: <span className="text-slate-800">{app.roleName}</span></p>
+             {app.resumeUrl && (
+               <a href={app.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1 mt-1.5 w-max">
+                 <ExternalLink className="w-3 h-3"/> View Resume
+               </a>
+             )}
+          </div>
         </div>
-      </div>
 
-      {/* Badges / Metrics */}
-      <div className="flex-1 flex flex-col justify-center gap-2 border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-4">
+        {/* Badges / Metrics */}
+        <div className="flex-1 flex flex-col justify-center gap-2 border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-4 min-w-0">
         {analysis ? (
            <button onClick={() => setShowAnalysis(!showAnalysis)} className="text-left group w-max">
              <p className="text-[10px] font-bold text-slate-400 mb-0.5 uppercase tracking-wider group-hover:text-violet-500">AI CV Match</p>
@@ -230,10 +231,11 @@ const ApplicationRow = ({ app, onStatusChange }) => {
             </div>
           )}
       </div>
+      </div>
 
       {/* Expanded AI Panel via Absolute/Relative or inline accordion */}
       {analysis && showAnalysis && (
-        <div className="col-span-full md:w-full w-full mt-3 bg-slate-50 border border-slate-100 rounded-xl p-4 order-last md:ml-0 md:mr-0">
+        <div className="w-full mt-4 bg-slate-50 border border-slate-100 rounded-xl p-4">
           <p className="text-xs text-slate-600 leading-relaxed mb-3">{analysis.summary}</p>
           <div className="grid md:grid-cols-2 gap-4">
             {analysis.strengths?.length > 0 && (

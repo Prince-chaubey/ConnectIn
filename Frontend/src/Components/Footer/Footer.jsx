@@ -80,9 +80,9 @@ const Footer = () => {
               <li><Link to="#" className="text-slate-400 hover:text-blue-400 transition-colors">Terms of Service</Link></li>
             </ul>
             
-            <a href="mailto:hello@connectsphere.com" className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors group">
+            <a href="mailto:info.connectsphere@gmail.com" className="inline-flex items-center gap-2 mt-6 text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors group">
               <Mail className="w-4 h-4" /> 
-              <span>hello@connectsphere.com</span>
+              <span>info.connectsphere@gmail.com</span>
             </a>
           </div>
 

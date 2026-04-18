@@ -11,7 +11,7 @@ const {
   sendShortlistEmail,
 } = require("../utils/emailer");
 
-// ─── Create Project (Creator only) ────────────────────────────────────────────
+// Create Project (Creator only)
 const createProject = async (req, res) => {
   try {
     const {

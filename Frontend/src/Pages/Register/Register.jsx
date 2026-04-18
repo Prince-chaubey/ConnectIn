@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.gif";
 import Layout from "../../Components/Layout/Layout"
 import toast from "react-hot-toast";
 import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
   const API_URL=import.meta.env.VITE_API_URL;
   
   const [formData, setFormData] = useState({
@@ -52,11 +53,12 @@ const handleSubmit = async (e) => {
   try {
     const res = await axios.post(`${API_URL}/auth/register`, formData);
 
-  
-    localStorage.setItem("role", formData.role);
-    localStorage.setItem("username",res.data.user.name);
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("role", res.data.user.role || formData.role);
+    localStorage.setItem("username", res.data.user.name);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
 
-    toast.success(res.data.message || "Registration successful!", {
+    toast.success("Account created successfully! Logging you in...", {
       id: toastId
     });
 
@@ -67,8 +69,8 @@ const handleSubmit = async (e) => {
       role: ""
     });
 
-    // ✅ redirect to login
-    window.location.href = "/login";
+    // ✅ redirect to home/dashboard
+    navigate("/");
 
   } catch (err) {
     toast.error(

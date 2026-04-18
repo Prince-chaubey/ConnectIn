@@ -23,9 +23,28 @@ const App = () => {
       <Toaster 
         position="top-right" 
         toastOptions={{
-          success: { icon: null },
-          error: { icon: null },
-          loading: { icon: null }
+          style: {
+            background: '#fff',
+            color: '#1e293b',
+            fontWeight: '600',
+            fontSize: '14px',
+            padding: '16px 24px',
+            borderRadius: '16px',
+            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #f1f5f9',
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff',
+            },
+          },
         }} 
       />
       <Routes>
@@ -44,7 +63,7 @@ const App = () => {
         <Route path="/my-applications" element={<ProtectedRoute><MyApplications /></ProtectedRoute>} />
         <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/manage-project/:id" element={<ProtectedRoute><ManageProject /></ProtectedRoute>} />
-        {/* Assessment — accessible without protection (handles login internally) */}
+       
         <Route path="/assessment" element={<Assessment />} />
       </Routes>
     </BrowserRouter>

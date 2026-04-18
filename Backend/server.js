@@ -18,7 +18,7 @@ app.use("/uploads", express.static("uploads"));
 //Connect Database
 connectDB();
 
-//All APIs Point
+
 
 
 app.use("/api/user",profileRouter);
