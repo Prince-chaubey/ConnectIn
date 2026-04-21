@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Layout from "../../Components/Layout/Layout";
 import InterviewCamera from "../../Components/InterviewCamera/InterviewCamera";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -70,49 +69,68 @@ const Interview = () => {
 
   if (submitted) {
     return (
-      <Layout>
-        <div className="min-h-[80vh] flex items-center justify-center bg-[#f8fafc] px-4">
-          <div className="bg-white p-12 rounded-3xl shadow-lg border border-emerald-100 text-center max-w-md w-full">
-            <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-10 h-10 text-emerald-500" />
-            </div>
-            <h2 className="text-2xl font-extrabold text-slate-800 mb-2">Interview Submitted!</h2>
-            <p className="text-slate-500 mb-8">Your AI-evaluated interview responses have been recorded. The project creator will review your overall score.</p>
-            <button 
-              onClick={() => navigate("/my-applications")}
-              className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-xl hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
-            >
-              Back to Applications
+      <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#eff6ff 0%,#f5f3ff 50%,#fdf4ff 100%)" }}
+           className="flex items-center justify-center px-4 py-10">
+        <div className="bg-white p-12 rounded-3xl shadow-2xl border border-slate-100 text-center max-w-md w-full">
+          <div className="w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center"
+               style={{ background: "linear-gradient(135deg,#2563eb,#7c3aed)" }}>
+            <span className="text-4xl text-white">✓</span>
+          </div>
+          <h2 className="text-2xl font-extrabold text-slate-800 mb-2">Interview Submitted!</h2>
+          <p className="text-slate-500 mb-8">Your AI-evaluated interview responses have been recorded. The project creator will review your overall score.</p>
+          <div className="flex gap-3 justify-center">
+            <button onClick={() => navigate("/my-applications")}
+              className="px-6 py-2.5 rounded-xl text-white text-sm font-bold transition-opacity hover:opacity-90"
+              style={{ background: "linear-gradient(135deg,#2563eb,#7c3aed)" }}>
+              View My Applications →
+            </button>
+            <button onClick={() => navigate("/")}
+              className="px-6 py-2.5 rounded-xl text-sm font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">
+              Go Home
             </button>
           </div>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-[#f8fafc] py-12 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto mb-10 text-center">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">AI Video Interview</h1>
-          <p className="text-slate-500 text-lg font-medium">Question {currentQuestionIndex + 1} of {questions.length}</p>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(135deg,#eff6ff 0%,#f5f3ff 50%,#fdf4ff 100%)" }}
+         className="flex flex-col items-center justify-center px-4 py-10">
+      
+      {/* Standalone Header */}
+      <div className="w-full max-w-4xl mb-8">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div style={{ background: "linear-gradient(135deg,#2563eb 0%,#7c3aed 60%,#a21caf 100%)" }} className="px-8 py-6 text-center">
+            <span className="text-3xl font-extrabold text-white tracking-tight">Connect<span style={{ color: "#c4b5fd" }}>Sphere</span></span>
+            <p className="text-indigo-100 text-sm mt-1 font-medium">AI Video Interview Portal</p>
+          </div>
+          <div style={{ background: "linear-gradient(90deg,#eff6ff,#f5f3ff)", borderBottom: "1px solid #e0e7ff" }}
+               className="px-8 py-4 text-center">
+            <p className="text-sm font-bold text-slate-700">Question {currentQuestionIndex + 1} of {questions.length}</p>
+          </div>
         </div>
+      </div>
 
+      <div className="w-full max-w-4xl">
         {loading ? (
-          <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl shadow-sm border border-slate-200">
-            <Loader2 className="w-12 h-12 text-blue-600 animate-spin mb-4" />
+          <div className="flex flex-col items-center justify-center p-20 bg-white rounded-3xl shadow-2xl border border-slate-100">
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
+                 style={{ background: "linear-gradient(135deg,#2563eb,#7c3aed)" }}>
+              <Loader2 className="w-8 h-8 text-white animate-spin" />
+            </div>
             <p className="text-lg font-bold text-slate-700">Evaluating your responses...</p>
             <p className="text-sm text-slate-500 mt-2">Our AI is analyzing your full transcript. This may take a moment.</p>
           </div>
         ) : (
           <InterviewCamera 
-            key={currentQuestionIndex} // forces remount for fresh timer/hooks
+            key={currentQuestionIndex}
             question={questions[currentQuestionIndex]} 
             onComplete={handleComplete} 
           />
         )}
       </div>
-    </Layout>
+    </div>
   );
 };
 
