@@ -11,10 +11,7 @@ const projectRouter = require("./routes/projectRoute");
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(cors({ 
-  origin: process.env.FRONTEND_URL || true, 
-  credentials: true 
-}));
+app.use(cors());
 
 // Health check endpoint for Render
 app.get('/', (req, res) => {
