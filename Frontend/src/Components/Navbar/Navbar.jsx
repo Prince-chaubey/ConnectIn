@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation,useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
 import logo from "../../assets/logo.gif";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +61,7 @@ const handleLogout = () => {
   setUserRole(null);
   setProfilePic(null);
   setIsDropdownOpen(false);
-
+  toast.success("Logged out successfully");
   navigate("/", { replace: true });
 };
 
