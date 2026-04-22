@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react";
 import logo from "../../assets/logo.gif";
 
@@ -11,6 +11,7 @@ const Navbar = () => {
   const [profilePic, setProfilePic] = useState(null);
   const location = useLocation();
   const dropdownRef = useRef(null);
+  const navigate=useNavigate();
   
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   const BASE_URL = API_URL.replace('/api', '');
@@ -33,25 +34,35 @@ const Navbar = () => {
   }, [location.pathname]);
 
   // Sync with localStorage
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    setUserRole(role);
-    try {
-      const userData = JSON.parse(localStorage.getItem("user"));
-      if (userData && userData.profilePic) {
-        setProfilePic(userData.profilePic);
-      }
-    } catch(e) {}
-  }, []);
+useEffect(() => {
+  const role = localStorage.getItem("role");
+  setUserRole(role);
+
+  try {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.profilePic) {
+      setProfilePic(userData.profilePic);
+    } else {
+      setProfilePic(null);
+    }
+  } catch (e) {
+    setProfilePic(null);
+  }
+}, [userRole]);
 
   const isLoggedIn = !!userRole;
 
-  const handleLogout = () => {
-    localStorage.clear();
-    setUserRole(null);
-    setIsDropdownOpen(false);
-    window.location.href = '/login'; // Force redirect to avoid stale state
-  };
+const handleLogout = () => {
+  localStorage.removeItem("role");
+  localStorage.removeItem("user");
+  localStorage.removeItem("username");
+
+  setUserRole(null);
+  setProfilePic(null);
+  setIsDropdownOpen(false);
+
+  navigate("/", { replace: true });
+};
 
   const active = (path) =>
     location.pathname === path
