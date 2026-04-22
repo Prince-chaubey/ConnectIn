@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, Code2, Users, Rocket, Target } from 'lucide-react';
 
 const Hero = () => {
+   const token=localStorage.getItem('token');
   return (
     <div className="w-full min-h-[calc(100vh-80px)] flex items-center justify-center bg-[#f8fafc] relative overflow-hidden font-sans py-12 lg:py-16">
       
@@ -35,7 +36,7 @@ const Hero = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link 
-              to="/register"
+              to={!token ? '/register':'/explore'}
               className="group flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-semibold hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
             >
               Start Building Free
