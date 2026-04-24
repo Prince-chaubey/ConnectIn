@@ -39,6 +39,8 @@ const Hero = () => {
               to={!token ? '/register':'/explore'}
               className="group flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-semibold hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300"
             >
+
+               
               Start Building Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
