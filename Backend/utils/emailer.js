@@ -21,6 +21,17 @@ const getTransporter = () => {
   return _transporter;
 };
 
+const getFrontendUrl = () => {
+  let url = process.env.FRONTEND_URL || "http://localhost:5173";
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = "https://" + url;
+  }
+  if (url.endsWith("/")) {
+    url = url.slice(0, -1);
+  }
+  return url;
+};
+
 /**
  * Send confirmation email to the applicant
  */
@@ -104,7 +115,7 @@ const sendApplicationConfirmation = async ({
             </p>
 
             <div style="text-align:center;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/my-applications" 
+              <a href="${getFrontendUrl()}/my-applications" 
                  style="display:inline-block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:13px 32px;border-radius:50px;font-size:14px;font-weight:700;letter-spacing:0.3px;">
                 View My Applications →
               </a>
@@ -188,7 +199,7 @@ const sendCreatorNotification = async ({
             </div>
 
             <div style="text-align:center;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/admin-dashboard"
+              <a href="${getFrontendUrl()}/admin-dashboard"
                  style="display:inline-block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:13px 32px;border-radius:50px;font-size:14px;font-weight:700;">
                 Review Applications →
               </a>
@@ -286,7 +297,7 @@ const sendApplicationStatusEmail = async ({
             </p>`}
 
             <div style="text-align:center;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/explore"
+              <a href="${getFrontendUrl()}/explore"
                  style="display:inline-block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:13px 32px;border-radius:50px;font-size:14px;font-weight:700;">
                 Explore More Projects →
               </a>
@@ -373,7 +384,7 @@ const sendShortlistEmail = async ({
   skillMatch,
   assessmentToken,
 }) => {
-  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+  const frontendUrl = getFrontendUrl();
   const assessmentLink = `${frontendUrl}/assessment?token=${assessmentToken}`;
 
   const mailOptions = {
@@ -483,7 +494,7 @@ const sendInterviewEmail = async ({
   roleName,
   applicationId
 }) => {
-  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+  const frontendUrl = getFrontendUrl();
   const interviewLink = `${frontendUrl}/interview/${applicationId}`;
 
   const mailOptions = {
@@ -509,7 +520,7 @@ const sendInterviewEmail = async ({
               <a href="${interviewLink}" style="color:#2563eb;font-weight:700;">${interviewLink}</a>
             </p>
             <div style="text-align:center;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/my-applications"
+              <a href="${getFrontendUrl()}/my-applications"
                  style="display:inline-block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;padding:13px 32px;border-radius:50px;font-size:14px;font-weight:700;">
                 Go to Dashboard →
               </a>
@@ -564,7 +575,7 @@ const sendSelectionEmail = async ({
               Expect further communications regarding onboarding directly from the project team.
             </p>
             <div style="text-align:center;">
-              <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/my-applications"
+              <a href="${getFrontendUrl()}/my-applications"
                  style="display:inline-block;background:linear-gradient(135deg,#059669,#10b981);color:#fff;text-decoration:none;padding:13px 32px;border-radius:50px;font-size:14px;font-weight:700;">
                 Go to Dashboard →
               </a>
